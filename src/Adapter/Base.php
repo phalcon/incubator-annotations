@@ -9,7 +9,7 @@
  * the LICENSE file that was distributed with this source code.
  */
 
-namespace Phalcon\Annotations\Adapter;
+namespace Phalcon\Incubator\Annotations\Adapter;
 
 use Phalcon\Annotations\Adapter;
 
