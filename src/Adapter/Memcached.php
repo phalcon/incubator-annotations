@@ -9,17 +9,17 @@
  * the LICENSE file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Phalcon\Incubator\Annotations\Adapter;
 
 use Phalcon\Cache\Backend\Libmemcached as CacheBackend;
 use Phalcon\Cache\Frontend\Data as CacheFrontend;
 use Phalcon\Annotations\Exception;
 use Memcached as MemcachedGeneric;
-use Phalcon\Annotations\Adapter;
+use Phalcon\Annotations\Adapter\AbstractAdapter;
 
 /**
- * Class Memcached
- *
  * Stores the parsed annotations to Memcached.
  * This adapter is suitable for production.
  *
@@ -34,10 +34,8 @@ use Phalcon\Annotations\Adapter;
  *     'prefix'   => 'prefix.',
  * ]);
  *</code>
- *
- * @package Phalcon\Annotations\Adapter
  */
-class Memcached extends Base
+class Memcached extends AbstractAdapter
 {
     /**
      * Default option for memcached port.
@@ -119,8 +117,6 @@ class Memcached extends Base
 
 
     /**
-     * {@inheritdoc}
-     *
      * @param string $key
      * @return string
      */

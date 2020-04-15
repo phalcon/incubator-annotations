@@ -9,14 +9,15 @@
  * the LICENSE file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Phalcon\Incubator\Annotations\Adapter;
 
-use Phalcon\Cache\Backend\Redis as BackendRedis;
-use Phalcon\Cache\Frontend\Data as FrontendData;
+use Phalcon\Annotations\Adapter\AbstractAdapter;
+use Phalcon\Cache\Adapter\Redis as CacheRedis;
+use Phalcon\Storage\SerializerFactory;
 
 /**
- * Class Redis
- *
  * Stores the parsed annotations to the Redis database.
  * This adapter is suitable for production.
  *
@@ -30,19 +31,15 @@ use Phalcon\Cache\Frontend\Data as FrontendData;
  *     'prefix'   => 'annotations_',
  * ]);
  *</code>
- *
- * @package Phalcon\Annotations\Adapter
  */
-class Redis extends Base
+class Redis extends AbstractAdapter
 {
     /**
-     * @var BackendRedis
+     * @var CacheRedis
      */
     protected $redis;
 
     /**
-     * {@inheritdoc}
-     *
      * @param array $options Options array
      */
     public function __construct(array $options = [])
@@ -61,34 +58,6 @@ class Redis extends Base
 
         parent::__construct($options);
 
-        $this->redis = new BackendRedis(
-            new FrontendData(
-                [
-                    'lifetime' => $this->options['lifetime'],
-                ]
-            ),
-            $options
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @return BackendRedis
-     */
-    protected function getCacheBackend()
-    {
-        return $this->redis;
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @param string $key
-     * @return string
-     */
-    protected function prepareKey($key)
-    {
-        return strval($key);
+        $this->redis = new CacheRedis(new SerializerFactory(), $options);
     }
 }

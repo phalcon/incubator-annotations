@@ -9,15 +9,16 @@
  * the LICENSE file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Phalcon\Incubator\Annotations\Adapter;
 
-use Phalcon\Annotations\Exception;
+use Phalcon\Annotations\Exception as AnnotationsException;
+use Phalcon\Annotations\Adapter\AbstractAdapter;
 use Phalcon\Cache\Frontend\Data as FrontendData;
 use Phalcon\Cache\Backend\Aerospike as BackendAerospike;
 
 /**
- * Class Aerospike
- *
  * Stores the parsed annotations to the Aerospike database.
  * This adapter is suitable for production.
  *
@@ -38,10 +39,8 @@ use Phalcon\Cache\Backend\Aerospike as BackendAerospike;
  *     ]
  * ]);
  *</code>
- *
- * @package Phalcon\Annotations\Adapter
  */
-class Aerospike extends Base
+class Aerospike extends AbstractAdapter
 {
     /**
      * @var BackendAerospike
@@ -50,21 +49,21 @@ class Aerospike extends Base
 
     /**
      * Default Aerospike namespace
+     *
      * @var string
      */
     protected $namespace = 'test';
 
     /**
      * The Aerospike Set for store sessions
+     *
      * @var string
      */
     protected $set = 'annotations';
 
     /**
-     * {@inheritdoc}
-     *
      * @param array $options Options array
-     * @throws Exception
+     * @throws AnnotationsException
      */
     public function __construct(array $options = [])
     {
@@ -75,7 +74,7 @@ class Aerospike extends Base
             !is_array($options['hosts'][0]) ||
             empty($options['hosts'][0])
         ) {
-            throw new Exception('No hosts given in options');
+            throw new AnnotationsException('No hosts given in options');
         }
 
         if (isset($options['namespace'])) {
@@ -114,8 +113,6 @@ class Aerospike extends Base
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @return BackendAerospike
      */
     protected function getCacheBackend()
@@ -124,8 +121,6 @@ class Aerospike extends Base
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @param string $key
      * @return string
      */
