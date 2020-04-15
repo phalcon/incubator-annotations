@@ -68,7 +68,8 @@ class Aerospike extends Base
      */
     public function __construct(array $options = [])
     {
-        if (!isset($options['hosts']) ||
+        if (
+            !isset($options['hosts']) ||
             !is_array($options['hosts']) ||
             !isset($options['hosts'][0]) ||
             !is_array($options['hosts'][0]) ||
