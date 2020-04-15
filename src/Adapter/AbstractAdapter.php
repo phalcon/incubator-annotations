@@ -11,16 +11,12 @@
 
 namespace Phalcon\Incubator\Annotations\Adapter;
 
-use Phalcon\Annotations\Adapter;
+use Phalcon\Annotations\Adapter\AdapterInterface;
 
 /**
- * \Phalcon\Annotations\Adapter\Base
- *
  * Base class for annotations adapters.
- *
- * @package Phalcon\Annotations\Adapter
  */
-abstract class Base extends Adapter
+abstract class AbstractAdapter implements AdapterInterface
 {
     /**
      * Default option for cache lifetime.
@@ -46,11 +42,11 @@ abstract class Base extends Adapter
     /**
      * Class constructor.
      *
-     * @param null|array $options
+     * @param array $options
      *
      * @throws \Phalcon\Mvc\Model\Exception
      */
-    public function __construct($options = null)
+    public function __construct(array $options = [])
     {
         if (!is_array($options) || !isset($options['lifetime'])) {
             $options['lifetime'] = self::$defaultLifetime;
@@ -64,8 +60,6 @@ abstract class Base extends Adapter
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @param string $key
      *
      * @return array
@@ -81,8 +75,6 @@ abstract class Base extends Adapter
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @param string $key
      * @param array $data
      */
