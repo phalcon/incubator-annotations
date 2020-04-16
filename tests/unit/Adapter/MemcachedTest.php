@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Phalcon\Incubator\Annotations\Tests\Adapter;
+namespace Phalcon\Incubator\Annotations\Tests\Unit\Adapter;
 
 use stdClass;
 use ReflectionMethod;
