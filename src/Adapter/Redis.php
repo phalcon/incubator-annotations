@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This file is part of the Phalcon Migrations.
+ * This file is part of the Phalcon Incubator Annotations.
  *
  * (c) Phalcon Team <team@phalcon.io>
  *
