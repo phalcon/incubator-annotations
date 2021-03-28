@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Phalcon\Incubator\Annotations\Adapter;
 
-use Phalcon\Cache\Adapter\Libmemcached;
 use Phalcon\Annotations\Exception;
+use Phalcon\Cache\Adapter\Libmemcached;
 use Phalcon\Helper\Arr;
 use Phalcon\Storage\SerializerFactory;
 
@@ -34,11 +34,9 @@ use Phalcon\Storage\SerializerFactory;
  * ]);
  *</code>
  */
-class Memcached extends Cache
+class Memcached extends AbstractCache
 {
     /**
-     * {@inheritdoc}
-     *
      * @param array $options options array
      *
      * @throws Exception
@@ -49,14 +47,14 @@ class Memcached extends Cache
             throw new Exception('No host given in options');
         }
 
-        $options['cache'] = new Libmemcached(
+        $cache = new Libmemcached(
             new SerializerFactory(),
             [
                 'defaultSerializer' => 'php',
                 'lifetime'          => Arr::get($options, 'lifetime', 8600),
                 'servers'           => [
                     [
-                        'host'   => Arr::get($options, 'host'),
+                        'host'   => Arr::get($options, 'host', '127.0.0.1'),
                         'port'   => Arr::get($options, 'port', 11211),
                         'weight' => Arr::get($options, 'weight', 1),
                     ],
@@ -65,6 +63,6 @@ class Memcached extends Cache
             ]
         );
 
-        parent::__construct($options);
+        parent::__construct($cache, $options);
     }
 }

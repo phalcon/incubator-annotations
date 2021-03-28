@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Phalcon\Incubator\Annotations\Adapter;
 
 use Phalcon\Annotations\Adapter\AbstractAdapter;
-use Phalcon\Annotations\Exception;
 use Phalcon\Annotations\Reflection;
 use Phalcon\Cache\Adapter\AdapterInterface;
 use Phalcon\Helper\Arr;
@@ -24,7 +23,7 @@ use Phalcon\Helper\Arr;
  * This adapter is suitable for production.
  *
  */
-class Cache extends AbstractAdapter
+abstract class AbstractCache extends AbstractAdapter
 {
     /**
      * @var AdapterInterface
@@ -37,21 +36,12 @@ class Cache extends AbstractAdapter
     protected $lifetime = 8600;
 
     /**
-     * {@inheritdoc}
-     *
+     * @param AdapterInterface $cache
      * @param array $options options array
-     *
-     * @throws Exception
      */
-    public function __construct(array $options)
+    public function __construct(AdapterInterface $cache, array $options = [])
     {
-        if (!Arr::has($options, 'cache') || !Arr::get($options, 'cache') instanceof AdapterInterface) {
-            throw new Exception(
-                'Parameter "cache" is required and it must be an instance of Phalcon\Cache\Adapter\AdapterInterface'
-            );
-        }
-
-        $this->cache = Arr::get($options, 'cache');
+        $this->cache = $cache;
 
         if (Arr::has($options, 'lifetime')) {
             $this->lifetime = Arr::get($options, 'lifetime');
