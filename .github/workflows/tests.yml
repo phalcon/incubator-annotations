@@ -36,7 +36,7 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           extensions: ${{ env.extensions }}
-          tools: pecl
+          tools: pecl, composer:v1
 
       - name: Get Composer Cache Directory
         id: composer-cache

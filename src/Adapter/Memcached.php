@@ -13,11 +13,10 @@ declare(strict_types=1);
 
 namespace Phalcon\Incubator\Annotations\Adapter;
 
-use Phalcon\Cache\Backend\Libmemcached as CacheBackend;
-use Phalcon\Cache\Frontend\Data as CacheFrontend;
+use Phalcon\Cache\Adapter\Libmemcached;
 use Phalcon\Annotations\Exception;
-use Memcached as MemcachedGeneric;
-use Phalcon\Annotations\Adapter\AbstractAdapter;
+use Phalcon\Helper\Arr;
+use Phalcon\Storage\SerializerFactory;
 
 /**
  * Stores the parsed annotations to Memcached.
@@ -31,33 +30,12 @@ use Phalcon\Annotations\Adapter\AbstractAdapter;
  *     'host'     => 'localhost',
  *     'port'     => 11211,
  *     'weight'   => 1,
- *     'prefix'   => 'prefix.',
+ *     'prefix'   => 'annotations_.',
  * ]);
  *</code>
  */
-class Memcached extends AbstractAdapter
+class Memcached extends Cache
 {
-    /**
-     * Default option for memcached port.
-     *
-     * @var array
-     */
-    protected static $defaultPort = 11211;
-
-    /**
-     * Default option for weight.
-     *
-     * @var int
-     */
-    protected static $defaultWeight = 1;
-
-    /**
-     * Memcached backend instance.
-     *
-     * @var CacheBackend
-     */
-    protected $memcached = null;
-
     /**
      * {@inheritdoc}
      *
@@ -67,61 +45,26 @@ class Memcached extends AbstractAdapter
      */
     public function __construct(array $options)
     {
-        if (!isset($options['host'])) {
+        if (!Arr::has($options, 'host')) {
             throw new Exception('No host given in options');
         }
 
-        if (!isset($options['port'])) {
-            $options['port'] = self::$defaultPort;
-        }
-
-        if (!isset($options['weight'])) {
-            $options['weight'] = self::$defaultWeight;
-        }
+        $options['cache'] = new Libmemcached(
+            new SerializerFactory(),
+            [
+                'defaultSerializer' => 'php',
+                'lifetime'          => Arr::get($options, 'lifetime', 8600),
+                'servers'           => [
+                    [
+                        'host'   => Arr::get($options, 'host'),
+                        'port'   => Arr::get($options, 'port', 11211),
+                        'weight' => Arr::get($options, 'weight', 1),
+                    ],
+                ],
+                'prefix' => Arr::get($options, 'prefix', 'annotations_'),
+            ]
+        );
 
         parent::__construct($options);
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @return CacheBackend
-     */
-    protected function getCacheBackend()
-    {
-        if (null === $this->memcached) {
-            $this->memcached = new CacheBackend(
-                new CacheFrontend(
-                    [
-                        'lifetime' => $this->options['lifetime'],
-                    ]
-                ),
-                [
-                    'servers' => [
-                        [
-                            'host'   => $this->options['host'],
-                            'port'   => $this->options['port'],
-                            'weight' => $this->options['weight'],
-                        ],
-                    ],
-                    'client' => [
-                        MemcachedGeneric::OPT_HASH       => MemcachedGeneric::HASH_MD5,
-                        MemcachedGeneric::OPT_PREFIX_KEY => $this->options['prefix'],
-                    ],
-                ]
-            );
-        }
-
-        return $this->memcached;
-    }
-
-
-    /**
-     * @param string $key
-     * @return string
-     */
-    protected function prepareKey($key)
-    {
-        return $key;
     }
 }

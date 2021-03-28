@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Phalcon\Incubator\Annotations\Adapter;
 
-use Phalcon\Annotations\Adapter\AbstractAdapter;
 use Phalcon\Cache\Adapter\Redis as CacheRedis;
 use Phalcon\Storage\SerializerFactory;
+use Phalcon\Helper\Arr;
 
 /**
  * Stores the parsed annotations to the Redis database.
@@ -32,32 +32,24 @@ use Phalcon\Storage\SerializerFactory;
  * ]);
  *</code>
  */
-class Redis extends AbstractAdapter
+class Redis extends Cache
 {
-    /**
-     * @var CacheRedis
-     */
-    protected $redis;
-
     /**
      * @param array $options Options array
      */
     public function __construct(array $options = [])
     {
-        if (!isset($options['host'])) {
-            $options['host'] = '127.0.0.1';
-        }
-
-        if (!isset($options['port'])) {
-            $options['port'] = 6379;
-        }
-
-        if (!isset($options['persistent'])) {
-            $options['persistent'] = false;
-        }
+        $options['cache'] = new CacheRedis(
+            new SerializerFactory(),
+            [
+                'defaultSerializer' => 'php',
+                'host' => Arr::get($options, 'host', '127.0.0.1'),
+                'port' => Arr::get($options, 'port', 6379),
+                'persistent' => Arr::get($options, 'persistent', false),
+                'prefix' => Arr::get($options, 'prefix', 'annotations_'),
+            ]
+        );
 
         parent::__construct($options);
-
-        $this->redis = new CacheRedis(new SerializerFactory(), $options);
     }
 }
