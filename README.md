@@ -5,10 +5,10 @@ Usage examples of the adapters available here:
 ## Memcached
 
 Stores the parsed annotations to Memcached.
-This adapter uses a `Phalcon\Cache\Backend\Libmemcached` backend to store the cached content:
+This adapter uses a `Phalcon\Cache\Adapter\Libmemcached` backend to store the cached content:
 
 ```php
-use Phalcon\Annotations\Adapter\Memcached;
+use Phalcon\Incubator\Annotations\Adapter\Memcached;
 
 $di->set(
     'annotations',
@@ -29,10 +29,10 @@ $di->set(
 ## Redis
 
 Stores the parsed annotations to Redis.
-This adapter uses a `Phalcon\Cache\Backend\Redis` backend to store the cached content:
+This adapter uses a `Phalcon\Cache\Adapter\Redis` backend to store the cached content:
 
 ```php
-use Phalcon\Annotations\Adapter\Redis;
+use Phalcon\Incubator\Annotations\Adapter\Redis;
 
 $di->set(
     'annotations',
@@ -48,4 +48,3 @@ $di->set(
     }
 );
 ```
-

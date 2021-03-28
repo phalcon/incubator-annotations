@@ -5,6 +5,17 @@ on: [push, pull_request]
 jobs:
   run-tests:
     name: PHP ${{ matrix.php-versions }}
+
+    services:
+      redis:
+        image: redis:5-alpine
+        ports:
+          - 6379
+      memcached:
+        image: memcached:1.5-alpine
+        ports:
+          - 11211
+
     runs-on: ubuntu-latest
     env:
       extensions: mbstring, intl, json, phalcon4, redis, mongodb, xdebug
@@ -53,8 +64,15 @@ jobs:
         run: composer install --prefer-dist --no-suggest
 
       - name: Run test suites
+        env:
+          DATA_REDIS_HOST: '127.0.0.1'
+          DATA_REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
+          DATA_MEMCACHED_HOST: '127.0.0.1'
+          DATA_MEMCACHED_PORT: ${{ job.services.memcached.ports['11211'] }}
         if: success()
-        run: vendor/bin/codecept run --coverage-xml=coverage-${{ matrix.php-versions }}.xml
+        run: |
+          cp tests/.env.example tests/.env
+          vendor/bin/codecept run --coverage-xml=coverage-${{ matrix.php-versions }}.xml
 
       - name: Upload coverage to Codecov
         if: success()

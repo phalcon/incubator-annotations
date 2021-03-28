@@ -17,4 +17,4 @@ coverage:
 
 params:
     # get params from environment vars
-    - env
+    - tests/.env

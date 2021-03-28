@@ -17,11 +17,12 @@ use Phalcon\Annotations\Adapter\AdapterInterface;
 use Phalcon\Incubator\Annotations\Adapter\Redis;
 use UnitTester;
 
-class ConstructCest
+final class ConstructCest
 {
     /**
      * Tests Phalcon\Incubator\Annotations\Adapter\Redis :: __construct()
      *
+     * @param UnitTester $I
      */
     public function annotationsAdapterMemcachedConstruct(UnitTester $I)
     {
@@ -29,10 +30,6 @@ class ConstructCest
 
         $adapter = new Redis([]);
 
-        $class = AdapterInterface::class;
-        $I->assertInstanceOf(
-            $class,
-            $adapter
-        );
+        $I->assertInstanceOf(AdapterInterface::class, $adapter);
     }
 }

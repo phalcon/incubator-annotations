@@ -18,7 +18,7 @@ use Phalcon\Annotations\Exception;
 use Phalcon\Incubator\Annotations\Adapter\Memcached;
 use UnitTester;
 
-class ConstructCest
+final class ConstructCest
 {
     /**
      * Tests Phalcon\Incubator\Annotations\Adapter\Memcached :: __construct()
@@ -37,16 +37,13 @@ class ConstructCest
             'host' => '127.0.0.1',
         ]);
 
-        $class = AdapterInterface::class;
-        $I->assertInstanceOf(
-            $class,
-            $adapter
-        );
+        $I->assertInstanceOf(AdapterInterface::class, $adapter);
     }
 
     /**
      * Tests Phalcon\Incubator\Annotations\Adapter\Memcached :: __construct()
      *
+     * @param UnitTester $I
      */
     public function annotationsAdapterMemcachedConstructWithoutHost(UnitTester $I)
     {

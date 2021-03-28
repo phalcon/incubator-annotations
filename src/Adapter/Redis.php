@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Phalcon\Incubator\Annotations\Adapter;
 
 use Phalcon\Cache\Adapter\Redis as CacheRedis;
-use Phalcon\Storage\SerializerFactory;
 use Phalcon\Helper\Arr;
+use Phalcon\Storage\SerializerFactory;
 
 /**
  * Stores the parsed annotations to the Redis database.
@@ -32,14 +32,14 @@ use Phalcon\Helper\Arr;
  * ]);
  *</code>
  */
-class Redis extends Cache
+class Redis extends AbstractCache
 {
     /**
      * @param array $options Options array
      */
     public function __construct(array $options = [])
     {
-        $options['cache'] = new CacheRedis(
+        $cache = new CacheRedis(
             new SerializerFactory(),
             [
                 'defaultSerializer' => 'php',
@@ -50,6 +50,6 @@ class Redis extends Cache
             ]
         );
 
-        parent::__construct($options);
+        parent::__construct($cache, $options);
     }
 }

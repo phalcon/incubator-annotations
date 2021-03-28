@@ -36,8 +36,7 @@
         "codeception/codeception": "^4.1",
         "codeception/module-asserts": "^1.0.0",
         "phpstan/phpstan": "^0.12.18",
-        "vlucas/phpdotenv": "^2.5",
-        "ocramius/package-versions": "1.4.0",
+        "vlucas/phpdotenv": "^4.1",
         "phpunit/php-token-stream": "3.1.2",
         "webmozart/glob": "4.1.0"
     },
