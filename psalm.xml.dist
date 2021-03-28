@@ -1,23 +1,23 @@
 <?xml version="1.0"?>
 <psalm
-    resolveFromConfigFile="true"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns="https://getpsalm.org/schema/config"
-    xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+        resolveFromConfigFile="true"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="https://getpsalm.org/schema/config"
+        xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
 >
     <projectFiles>
-        <directory name="src" />
+        <directory name="src"/>
         <ignoreFiles>
-            <directory name="vendor" />
-            <file name="vendor/symfony/polyfill-mbstring/bootstrap80.php" />
+            <directory name="vendor"/>
+            <file name="vendor/symfony/polyfill-mbstring/bootstrap80.php"/>
         </ignoreFiles>
     </projectFiles>
- <issueHandlers>
+    <issueHandlers>
         <MethodSignatureMismatch>
             <errorLevel type="suppress">
-              <file name="src/Adapter/Cache.php" />
-              <file name="src/Adapter/Memcached.php" />
-              <file name="src/Adapter/Redis.php" />
+                <file name="src/Adapter/AbstractCache.php"/>
+                <file name="src/Adapter/Memcached.php"/>
+                <file name="src/Adapter/Redis.php"/>
             </errorLevel>
         </MethodSignatureMismatch>
     </issueHandlers>
