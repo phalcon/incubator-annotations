@@ -65,7 +65,9 @@ jobs:
 
       - name: Run test suites
         env:
+          DATA_REDIS_HOST: '127.0.0.1'
           DATA_REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
+          DATA_MEMCACHED_HOST: '127.0.0.1'
           DATA_MEMCACHED_PORT: ${{ job.services.memcached.ports['11211'] }}
         if: success()
         run: |
