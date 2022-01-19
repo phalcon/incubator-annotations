@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Phalcon\Incubator\Annotations\Adapter;
 
 use Phalcon\Cache\Adapter\Redis as CacheRedis;
-use Phalcon\Helper\Arr;
+use Phalcon\Support\Helper\Arr\Get;
 use Phalcon\Storage\SerializerFactory;
 
 /**
@@ -39,14 +39,15 @@ class Redis extends AbstractCache
      */
     public function __construct(array $options = [])
     {
+        $this->getObject =  new Get();
         $cache = new CacheRedis(
             new SerializerFactory(),
             [
                 'defaultSerializer' => 'php',
-                'host' => Arr::get($options, 'host', '127.0.0.1'),
-                'port' => Arr::get($options, 'port', 6379),
-                'persistent' => Arr::get($options, 'persistent', false),
-                'prefix' => Arr::get($options, 'prefix', 'annotations_'),
+                'host' => $this->getObject->__invoke($options, 'host', '127.0.0.1'),
+                'port' => $this->getObject->__invoke($options, 'port', 6379),
+                'persistent' => $this->getObject->__invoke($options, 'persistent', false),
+                'prefix' => $this->getObject->__invoke($options, 'prefix', 'annotations_'),
             ]
         );
 

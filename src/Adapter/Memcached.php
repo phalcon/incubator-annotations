@@ -15,7 +15,8 @@ namespace Phalcon\Incubator\Annotations\Adapter;
 
 use Phalcon\Annotations\Exception;
 use Phalcon\Cache\Adapter\Libmemcached;
-use Phalcon\Helper\Arr;
+use Phalcon\Support\Helper\Arr\Has;
+use Phalcon\Support\Helper\Arr\Get;
 use Phalcon\Storage\SerializerFactory;
 
 /**
@@ -43,7 +44,10 @@ class Memcached extends AbstractCache
      */
     public function __construct(array $options)
     {
-        if (!Arr::has($options, 'host')) {
+        $this->getObject = new Get();
+        $this->hasObject = new Has();
+
+        if (!$this->hasObject->__invoke($options, 'host')) {
             throw new Exception('No host given in options');
         }
 
@@ -51,15 +55,15 @@ class Memcached extends AbstractCache
             new SerializerFactory(),
             [
                 'defaultSerializer' => 'php',
-                'lifetime'          => Arr::get($options, 'lifetime', 8600),
+                'lifetime'          => $this->getObject->__invoke($options, 'lifetime', 8600),
                 'servers'           => [
                     [
-                        'host'   => Arr::get($options, 'host', '127.0.0.1'),
-                        'port'   => Arr::get($options, 'port', 11211),
-                        'weight' => Arr::get($options, 'weight', 1),
+                        'host'   => $this->getObject->__invoke($options, 'host', '127.0.0.1'),
+                        'port'   => $this->getObject->__invoke($options, 'port', 11211),
+                        'weight' => $this->getObject->__invoke($options, 'weight', 1),
                     ],
                 ],
-                'prefix' => Arr::get($options, 'prefix', 'annotations_'),
+                'prefix' => $this->getObject->__invoke($options, 'prefix', 'annotations_'),
             ]
         );
 

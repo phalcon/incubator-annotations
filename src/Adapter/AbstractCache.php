@@ -16,7 +16,8 @@ namespace Phalcon\Incubator\Annotations\Adapter;
 use Phalcon\Annotations\Adapter\AbstractAdapter;
 use Phalcon\Annotations\Reflection;
 use Phalcon\Cache\Adapter\AdapterInterface;
-use Phalcon\Helper\Arr;
+use Phalcon\Support\Helper\Arr\Get;
+use Phalcon\Support\Helper\Arr\Has;
 
 /**
  * Stores the parsed annotations to Cache (Use Phalcon\Cache\Adapter\AdapterInterface).
@@ -36,15 +37,27 @@ abstract class AbstractCache extends AbstractAdapter
     protected $lifetime = 8600;
 
     /**
+     * @var Has
+     */
+    protected $hasObject;
+
+    /**
+     * @var Get
+     */
+    protected $getObject;
+
+    /**
      * @param AdapterInterface $cache
      * @param array $options options array
      */
     public function __construct(AdapterInterface $cache, array $options = [])
     {
         $this->cache = $cache;
+        $this->getObject = new Get();
+        $this->hasObject = new Has();
 
-        if (Arr::has($options, 'lifetime')) {
-            $this->lifetime = Arr::get($options, 'lifetime');
+        if ($this->hasObject->__invoke($options, 'lifetime')) {
+            $this->lifetime = $this->getObject->__invoke($options, 'lifetime');
         }
     }
 
