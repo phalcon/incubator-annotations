@@ -18,12 +18,12 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
-      extensions: mbstring, intl, json, phalcon4, redis, mongodb, xdebug
+      extensions: mbstring, intl, json, phalcon-5.0.0beta, redis, mongodb, xdebug
       key: cache-v0.0.2
     strategy:
       fail-fast: false
       matrix:
-        php-versions: ['7.2', '7.3', '7.4']
+        php-versions: ["7.4", "8.0"]
     steps:
       - uses: actions/checkout@v1
 
@@ -65,9 +65,9 @@ jobs:
 
       - name: Run test suites
         env:
-          DATA_REDIS_HOST: '127.0.0.1'
+          DATA_REDIS_HOST: "127.0.0.1"
           DATA_REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
-          DATA_MEMCACHED_HOST: '127.0.0.1'
+          DATA_MEMCACHED_HOST: "127.0.0.1"
           DATA_MEMCACHED_PORT: ${{ job.services.memcached.ports['11211'] }}
         if: success()
         run: |
